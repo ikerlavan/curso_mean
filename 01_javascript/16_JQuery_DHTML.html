@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+
+</head>
+
+<!--
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+-->
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+
+
+$(pruebas);
+
+function pruebas(){    
+    //$('#div3').append($('<table border="1"><tr><td>HOLA</td></tr></table>'))
+
+    $('<table border="1"><tr><td>HOLA</td></tr></table>')
+        .appendTo('#div3')
+
+
+        console.log('#div3')
+
+
+        $('#texto').animate(
+        {
+            opacity : 0.25
+            //,left    : "+=50"
+            ,width  : "toggle"
+        }
+        ,5000)
+}
+
+
+</script>
+
+<body>
+
+<h1>JQuery DHtml</h1>
+
+    <div id="div1">
+        <span id="span1">1</span>
+        <span id="span2">2</span>
+        <span id="span3">3</span>
+        <span id="span4">4</span>
+        <span id="span5">5</span>
+        <span id="span6" class="x">6</span>
+        <span id="span7">7</span>
+    </div>
+
+    <hr/>
+
+    <div id="div2">
+        <b>
+            Si todo está listo en la cara oculta de la luna,
+            vengan esas cinco notas
+        </b>
+    </div>
+
+    <hr/>
+
+    <div id="div3"></div>
+
+    <hr/>
+
+    <div id="div4">ALGO</div>
+
+    <hr/>
+
+    <div id="div5"></div>
+
+    <hr/>
+
+    <div id="div6"></div>
+
+    <hr/>
+
+    <div id="div7">
+        <ul id="lista"></ul>        
+    </div>
+
+    <hr/>
+
+    <div id="div8">
+        <b id="texto">ABCDEFG</b>        
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<script type="application/javascript">
+
+//Definimos un objeto que será nuestro prototipo
+let Actor = {
+    nombre : '',
+    pais   : '',
+    year   : ''
+}
+//A partir del prototipo creamos las nuevas instancias CLONANDO
+//Esta clonación NO ES EN PROFUNDIDAD
+//Al clonar crean un objeto con exactamente los mismos valores en las 
+//propiedades que el original
+//Para clonar usamos 'Object', que es un objeto implícito como (por ej.) document o window
+let actor1 = Object.create(Actor)
+actor1.nombre = 'Steve McQueen'
+actor1.pais = 'EE.UU.'
+actor1.year = 1930
+let actor2 = Object.create(Actor)
+actor2.nombre = 'Harrison Ford'
+actor2.pais = 'EE.UU.'
+actor2.year = 1942
+console.log(actor1)
+console.log(actor2)
+
+//
+//Composición de objetos
+//
+let Persona = {
+    nombre    : '',
+    direccion : {
+        calle   : '',
+        ciudad  : '',
+        estado  : ''
+    }
+}
+let homer = Object.create(Persona)
+homer.nombre = 'Homer J Simpson'
+homer.direccion.calle  = 'Evergreen Terrace'
+homer.direccion.ciudad = 'Stringfield'
+homer.direccion.estado = '????'
+
+let bender = Object.create(Persona)
+bender.nombre = 'Bender Bending Rodriguez'
+bender.direccion.calle  = 'Apartamentos para Robots'
+bender.direccion.ciudad = 'NNY'
+bender.direccion.estado = 'NY'
+
+//Como la clonacion no es en profundidad las dos personas comparten
+//la misma dirección!!!
+console.log(homer)
+console.log(bender)
+console.log(homer.direccion.ciudad)  //NNY
+console.log(bender.direccion.ciudad) //NNY
+
+//
+//Añadiendo funcionalidad a los objetos
+//
+//Dos maneras: 
+//-Directamente en el objeto que usamos para clonar
+//-Añadiendo las funciones al prototipo (como en '08_Objetos.html')
+//
+//En este ejemplo los objetos clonados comparten la misma funcion 'toString' 
+let Serie = {
+    titulo : '',
+    year   : '',
+    toString : function(){
+        return this.titulo+", "+this.year
+    }
+}
+
+let serie1 = Object.create(Serie)
+serie1.titulo = 'Expediente X'
+serie1.year = 1993
+
+let serie2 = Object.create(Serie)
+serie2.titulo = 'Firefly'
+serie2.year = 2002
+
+console.log(serie1.toString())
+console.log(serie2.toString())
+
+//
+//Añadiendo las funciones al prototipo
+//
+console.log("==================================")
+let Libro = {
+    titulo : '',
+    autor  : ''
+}
+
+let libro1 = Object.create(Libro)
+libro1.titulo = 'El Quijote'
+libro1.autor  = 'Cervantes'
+let libro2 = Object.create(Libro)
+libro2.titulo = 'El fin de la eternidad'
+libro2.autor  = 'Isaac Asimov'
+
+Libro.toString = function(){
+    return this.titulo+", "+this.autor
+}
+
+console.log(libro1.toString())
+console.log(libro2.toString())
+
+//
+//Podemos simular 'Herencia'
+//
+console.log("=======================================");
+//Creamos el 'prototipo' de Persona
+Persona = { 
+    'nombre'    : null,
+    'direccion' : null,
+    'telefono'  : null 
+}
+Persona.toString = function(){
+    console.log(this.nombre+","+this.direccion+","+this.telefono);
+}
+//El prototipo de los clientes se basa en el de las personas
+let Cliente = Object.create(Persona)
+Cliente.cuentaBancaria = null
+//El prototipo de los empleados se basa en el de las personas
+let Empleado = Object.create(Persona)
+Empleado.departamento = null
+//El prototipo de los visitantes se basa en el de las personas
+let Visitante = Object.create(Persona)
+Visitante.motivo = null
+
+let cliente1   = Object.create(Cliente)
+cliente1.nombre = "Groucho"
+let empleado1  = Object.create(Empleado)
+empleado1.nombre = "Chico"
+let visitante1 = Object.create(Visitante)
+visitante1.nombre = "Harpo"
+console.log(cliente1)
+console.log(empleado1)
+console.log(visitante1)
+
+</script>
+
+<body>
+    
+    <h1> 12 Objetos 2</h1>
+
+</body>
+</html>

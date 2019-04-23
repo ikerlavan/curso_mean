@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Closures</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <script type="application/javascript">
+        function nido() {
+            let txt = "Qué pasa buey!";
+            let f = function () {
+                console.log(arguments);
+                console.log(txt);
+            }
+            return f;
+        }
+
+        let funcion = nido();
+        funcion();
+
+
+
+        function crearSumador(s1) {
+            return function (s2) {
+                return s1 + s2;
+            }
+        }
+
+        let sumador10 = crearSumador(10);
+        let sumador20 = crearSumador(20);
+        let sumador30 = crearSumador(30);
+        let sumador40 = crearSumador(40);
+
+        console.log(sumador10(1));
+        console.log(sumador20(2));
+        console.log(sumador30(3));
+        console.log(sumador40(4));
+
+    </script>
+
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h3>Closures</h3>
+        <div>
+            <h5>Stack -> Pila</h5>
+            <p>let numero = 5;
+                let activo = true;
+                let coche = {marca = 'ford'};
+                let f = function(){
+
+                };
+                En la pila se crean las variables con la referencia a la dirección de memoria.
+            </p>
+            <p>Cada función tiene su propia pila, con una copia de los valores de las variables que tenían inicialmente</p>
+        </div>
+        <h5>Heap -> Montón</h5>
+        <p>El heap recorre las direcciones de memoria buscando una variable que haga referencia
+            a ese espacio de memoria. Si no encuentra nada, debería borrar el objeto del montón o heap o memoria
+        </p>
+
+    </div>
+</body>
+
+</html>

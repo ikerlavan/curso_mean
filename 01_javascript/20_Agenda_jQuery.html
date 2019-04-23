@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Agenda</title>
+
+    <link href="bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="jquery.js"></script>
+
+<!--     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<script type="application/javascript">
+
+$(function(){
+    asignarEventos();
+});
+
+    function Contacto(nombre, direccion, telefono, email, id){
+        let idG = id;
+        if(!idG){
+            idG = getId();
+        }
+        this.id         = idG;
+        this.nombre     = nombre;
+        this.direccion  = direccion;
+        this.telefono   = telefono;
+        this.email      = email;
+    }
+
+    Contacto.prototype.toString = function(){
+        return "Hola, soy " + this.nombre + " y vivo en " + this.direccion;
+    }
+
+    Array.prototype.toString = function () {
+        let that = this;
+        for(let contacto of that){
+            console.log(contacto.toString());
+        }
+    }
+
+    var arr = cargarArray()||[];
+
+    function getId(){
+        let i = new Number(localStorage.getItem('id')||arr.length);
+        localStorage.setItem('id',i+1);
+        return i+1;
+    }
+
+    function cargarArray(){
+        return JSON.parse(localStorage.getItem('agenda'))
+    }
+
+    function leerContactos(){
+        accionesFormulario();
+    }
+
+    function asignarEventos(){
+        $('#insertar').click(function(){
+            console.log('insertarContacto')
+            insertarContacto()
+        })
+        $('#actualizar').click(function(){
+            console.log('actualizarContacto')
+            actualizarContacto()
+        })
+        $('#borrar').click(function(){
+            console.log('borrarContacto')
+            borrarContacto()
+        })
+        $('#limpiar').click(function(){
+            console.log('limpiarFormulario')
+            limpiarFormulario()
+        })
+        $('#guardar').click(function(){
+            console.log('guardarContactos')
+            guardarContactos()
+        })
+        leerContactos()
+    }
+
+    
+
+        
+    
+    
+    /* window.onbeforeunload = function(){
+                
+        console.log('Tienes cambios sin guardar');
+        
+        return false;
+    }
+ */
+    
+
+    function modoInsercion(){
+        console.log('modoInsercion')
+        $('#insertar').removeAttr('disabled')
+        $('#actualizar').prop('disabled','disabled')
+        $('#borrar').prop('disabled','disabled')
+        $('#limpiar').prop('disabled',false)
+        $('#guardar').prop('disabled',false)
+    }
+
+    function modoSeleccion(){
+        $('#insertar').prop('disabled','disabled')
+        $('#actualizar').removeAttr('disabled')
+        $('#borrar').removeAttr('disabled')
+        $('#limpiar').removeAttr('disabled')
+        $('#guardar').removeAttr('disabled')
+    }
+
+    function validarCampoTexto(obj){
+        return obj.value.trim() !== '';
+    }
+
+    function rellenarTabla(){
+        let contactos = arr;
+        
+        $('#tablaBody').innerHTML = '';
+
+        /* con jQuery */
+        $(contactos).each(function(index){
+            let fila = ''
+            if(index%2===0){
+                fila = '<tr style="background-color:rgba(0,0,0,.05)">'
+            }else{
+                fila = '<tr>'
+            }
+            let contacto = this
+            $(fila)
+                .append('<td>' + this.id + '</td>')
+                .append('<td>' + this.nombre + '</td>')
+                .append('<td>' + this.direccion + '</td>')
+                .append('<td>' + this.telefono + '</td>')
+                .append('<td>' + this.email + '</td>')
+                .append('</tr>')
+                .click(function(){
+                    console.log(contacto)
+                    rellenarFormulario(contacto);
+                    modoSeleccion();
+                })
+                .appendTo('#tablaBody')
+        })
+    }
+
+    function getValorConLetraCapital(cadena){
+        let capital = cadena.charAt(0).toUpperCase();
+        capital = capital + cadena.substring(1,cadena.length);
+        return capital;
+    }
+
+    let getRow = function(obj){
+        return '<tr><th scope="row">'+obj.id+'</th><td>'+obj.nombre+'</td><td>'+obj.direccion+'</td><td>'+obj.telefono+'</td><td>'+obj.email+'</td></tr>';
+    }
+
+    function rellenarFormulario(contacto){
+        $('#nombre').val(contacto.nombre)
+        $('#telefono').val(contacto.telefono)
+        $('#direccion').val(contacto.direccion)
+        $('#id').val(contacto.id)
+        $('#email').val(contacto.email)
+    }
+
+    function insertarContacto() {
+        console.log('insertarContacto');
+        if(!validarDatos()){
+            return false;
+        }
+        arr.push(getContactoDesdeFormulario());
+        accionesFormulario();
+    }
+
+    function actualizarContacto() {
+        console.log('actualizar');
+        let contacto = getContactoDesdeFormulario();
+        if(!contacto){
+            // de esta manera cargo la tabla inicialmente
+            return false;
+        }
+
+        for(let x=0;x<arr.length;x++){
+            let aux = arr[x];
+            if(aux.id === parseInt(contacto.id)){
+                arr[x] = contacto;
+                break;
+            }
+        }
+        accionesFormulario();
+    }
+
+    function borrarContacto() {
+        console.log('borrar');
+        let contacto = getContactoDesdeFormulario();
+        if(contacto){
+            /* let arr1 = arr; arr  = [];
+            for(cont of arr1){
+                if(cont.id !== parseInt(contacto.id)){
+                    arr.push(cont);
+                }
+            }
+            arr1 = []; */
+
+            for(let x=0;x<arr.length;x++){
+                let aux = arr[x];
+                if(aux.id === parseInt(contacto.id)){
+                    arr.splice(x,1);
+                    break;
+                }
+            }
+            accionesFormulario();
+        }
+    }
+
+    function getContactoDesdeFormulario(){
+        if(validarDatos()){
+            return new Contacto(
+                $('#nombre').val()
+                , $('#direccion').val()
+                , $('#telefono').val()
+                , $('#email').val()
+                , $('#id').val()===''?null:$('#id').val()
+            );
+        }
+        return null;
+    }
+
+    function limpiarFormulario() {
+        console.log('limpiarFormulario');
+        $('input[type=text], input[type=email]').each(function(index){
+            $(this).val('')
+        })
+        /* nombre.value    = ''; 
+        direccion.value = '';
+        telefono.value  = '';
+        email.value     = '';
+        id.value        = ''; */
+        modoInsercion();
+    }
+
+    function guardarContactos() {
+        localStorage.setItem('agenda',JSON.stringify(arr));
+    }
+
+    function validarDatos(){
+        let ok = true
+        $('input[type=text], input[type=email]').each(function(index){
+            if( $(this).val().trim() == '' ){
+                return false;
+            }
+        })
+        return true
+    }
+
+    function accionesFormulario(){
+        limpiarFormulario();
+        rellenarTabla();
+        // controlBotones();
+    }
+
+</script>
+
+<body>
+    <div class="container">
+        <h2>Agenda</h2>
+<!--         <form> -->
+            <div>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary" id="insertar">Insertar</button>
+                    <button type="button" class="btn btn-primary" id="actualizar">Actualizar</button>
+                    <button type="button" class="btn btn-primary" id="borrar">Borrar</button>
+                    <button type="button" class="btn btn-primary" id="limpiar">Limpiar</button>
+                    <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id">Id</label>
+                <input type="text" class="form-control-plaintext" id="id" aria-describedby="emailHelp"
+                    placeholder="Se genera dinámico">
+            </div>
+        <div class="row">
+            <div class="col">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre" aria-describedby="emailHelp"
+                    placeholder="Introduce el nombre">
+            </div>
+
+            <div class="col">
+                <label for="direccion">Dirección</label>
+                <input type="text" class="form-control" id="direccion" aria-describedby="emailHelp"
+                    placeholder="Introduce la dirección">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="telefono">Teléfono</label>
+                <input type="text" class="form-control" id="telefono" aria-describedby="emailHelp"
+                    placeholder="Introduce el teléfono">
+            </div>
+        
+            <div class="col">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp"
+                    placeholder="Introduce el email">
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table .table-striped" id="tabla">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <!-- <th scope="col">Id</th> -->
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaBody">
+                    
+                </tbody>
+            </table>
+        </div>
+        <!-- </form> -->
+    </div>
+</body>
+
+</html>

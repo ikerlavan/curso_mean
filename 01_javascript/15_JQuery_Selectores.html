@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+</head>
+
+
+<!-- 
+-->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script> 
+
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+
+/* window.onload = function(){
+    for(f of funciones){
+        f();
+    }
+}
+
+function asignarMovidasAlWindowOnLoad(funcion){
+    if(typeof funciones == 'undefined'){
+        funciones = [];
+    }
+    funciones.push(funcion);
+}
+
+asignarMovidasAlWindowOnLoad(pruebas1);
+asignarMovidasAlWindowOnLoad(pruebas2);
+asignarMovidasAlWindowOnLoad(pruebas3); */
+
+$(pruebas)
+
+function pruebas(){
+    console.log('=========    Seleccionando nodos   ========');
+    
+    /* let todosNodos = $('*');
+    console.log(todosNodos);
+
+    //Buscando por ID
+    let id = $('#div1')
+    console.log(id.get(0)) */
+
+    let tags = $('a');
+    console.log(tags);
+    $('input[type="text"]').val('X')
+
+/*     tags = $('input').each(function(index){
+        $(this).val(index)
+    }); */
+    console.log($('input').val())
+
+    console.log($('.form-control'))
+
+    $('.titulo').css({
+        color : 'orange'
+        ,fontSize : '230%'
+        ,backgroundColor : 'lightGreen'
+    })
+/* 
+    $('input[dato]').val('Tipo texto').fadeOut(600).fadeIn(900).val('Cambió')
+
+    $('input[type=button]').addClass('btn-dark').fadeOut(600).fadeIn(900) */
+
+    $("option:selected").each(function(){
+        console.log($(this).get(0))
+    })
+
+    $("input:disabled").each(function(){
+        console.log($(this).get(0))
+    })
+
+    $('[type=text],th').animate(
+        {
+            opacity : 0.25
+            //,left    : "+=50"
+            ,height  : "toggle"
+        }
+        ,5000).fadeIn('slow')
+
+    $('#div3 input').css("backgroundColor","#333");
+    $('#div3>input').css("backgroundColor","#CCC");
+
+
+    $('h1:contains("JQuery")').animate(
+        {
+            opacity : 0.50
+            //,right    : "+=50"
+            ,height  : "toggle"
+        }
+        ,5000).fadeIn('slow').html("<h2>JQuery gran biblioteca</h2>")
+
+        $('#tabla tr:odd').css('backgroundColor','#AAAAAA')
+        $('#tabla tr:eq(0)').css('backgroundColor','#9365B2')
+        $('#tabla tr:even').css('backgroundColor','#CAAADF')
+        prueba()
+    
+}
+
+function prueba(){
+    console.log("========================================");
+    let $opcionesSeleccionadas = $("option:selected");
+    for(let a=0; a<$opcionesSeleccionadas.length; a++){
+        console.log($opcionesSeleccionadas[a].value);
+    }  
+    
+    //Obteniendo los chexbox marcados
+    console.log("========================================");
+    let $chk = $("input[type=checkbox]:checked")
+    for(let x=0; x<$chk.length; x++){
+        console.log($chk[x].id);
+    }    
+    //Obteniendo los radio buttons marcados
+    console.log("========================================");
+    let $radios = $("input[type=radio]:checked")
+    for(let x=0; x<$radios.length; x++){
+        console.log($radios[x].id);
+    }    
+}
+
+</script>
+
+<body >
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+                <h1 id="X" class="titulo">JQuery gran reserva</h1>
+        </div>
+    </div>
+
+    <hr/>
+    <div class="row">
+            <div class="col-3">
+                    
+            </div>
+            <div id="form1" class="col-6">
+                    <input type="text" id="txt1"/>
+                    <input type="text" id="txt2" movida="movida"/>
+                    <input type="text" id="txt3"/>
+                    <input type="text" id="txt4" movida="movida"/>
+                </div>
+
+        </div>
+    <hr/>
+    <div class="row">
+            <div class="col-3">
+                    
+            </div>
+        <did id="form2" class="col-6">
+            <input type="text" id="txt5" dato="101"/>
+            <input type="text" id="txt6" movida="movida"/>
+            <input type="text" id="txt7"/>
+            <input type="text" id="txt8" movida="movida"/>
+            <br/>
+            <input type="button" id="btn1" value="Boton 1"/>
+            <input type="button" id="btn2" value="Boton 2"/>
+            <input type="button" id="btn3" value="Boton 3"/>
+            <input type="button" id="btn4" value="Boton 4"/>
+        </div>
+    </div>
+    <hr/>
+
+    <div id="div1"></div>
+
+    <hr/>
+
+    <div class="row">
+            <div class="col-3">
+                    
+            </div>
+        <did id="div2" class="col-6">
+                <select  class="form-control mb-4" id="ciudad">
+                <option>Getafe</option>
+                <option>Madrid</option>
+                <option>Salamanca</option>
+                <option>Santa Pola</option>
+            </select>
+    
+            <select class="form-control mb-4" id="Colores">
+                <option>Rojo</option>
+                <option>Verde</option>
+                <option>Azul</option>
+            </select>
+
+            <input type="button" value="Dale" onclick="prueba()" class="button mb-4" />
+    </div>
+    <div class=row>
+
+            <div class="col-3">
+                    
+            </div>
+            <did class="col-6">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" class="form-check-input" id="chk1"/>
+                    <input type="checkbox" class="form-check-input" id="chk2" checked="checked"/>
+                    <input type="checkbox" class="form-check-input" id="chk3"/>
+                    <input type="checkbox" class="form-check-input" id="chk4" checked="checked"/>
+                    <input type="checkbox" class="form-check-input" id="chk5"/>
+                    <input type="checkbox" class="form-check-input" id="chk6" checked="checked"/>
+                </div>
+                <br/>
+                <div class="form-check form-check-inline">
+                    <input type="radio" class="form-check-input" name="rb" id="rb1"/>
+                    <input type="radio" class="form-check-input" name="rb" id="rb2"/>
+                    <input type="radio" class="form-check-input" name="rb" id="rb3"/>
+                    <input type="radio" class="form-check-input" name="rb" id="rb4"/>
+                    <input type="radio" class="form-check-input" name="rb" id="rb5"/>
+                    <input type="radio" class="form-check-input" name="rb" id="rb6"/>
+                </div>
+            </div>
+
+ 
+    </div>
+    </div>
+
+    <hr/>
+    <div class=row>
+            <div class="col-3">
+            </div>
+        <div id="div3" class="form-group col-6">
+            <input type="text" class="form-control" id="txt9"/>
+            <input type="text" class="form-control" id="txt10" movida="movida"/>
+
+            <div id="div4" class="">
+                <input type="text" class="form-control" id="txt11"/>
+                <input type="text" class="form-control" id="txt12" movida="movida"/>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class=row>
+            <div class="col-3">
+            </div>
+        <div id="5" class="form-group col-6">
+        <table border="1" width="400px" class="table" id="tabla">
+            <tr>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td>11</td>
+                    <td>12</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td>14</td>
+                    <td>15</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td>17</td>
+                    <td>18</td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td>20</td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td>23</td>
+                    <td>24</td>
+                </tr>
+                <tr>
+                    <td>25</td>
+                    <td>26</td>
+                    <td>27</td>
+                </tr>
+                <tr>
+                    <td>28</td>
+                    <td>29</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>31</td>
+                    <td>32</td>
+                    <td>33</td>
+                </tr>
+            </tbody>
+        </table>
+</div>
+    </div>    
+    
+    <hr/>
+</div>
+</body>
+</html>

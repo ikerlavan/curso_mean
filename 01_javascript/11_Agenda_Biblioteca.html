@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Agenda</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <script src="js/11_Biblioteca.js" type="application/javascript"></script>
+
+</head>
+
+<script type="application/javascript">
+
+    window.onload   = function(){
+        insertar.onclick    = insertarContacto;
+        actualizar.onclick  = actualizarContacto;
+        borrar.onclick      = borrarContacto;
+        limpiar.onclick     = limpiarFormulario;
+        guardar.onclick     = guardarContactos;
+        leerContactos();
+    }
+
+    window.onbeforeunload = function(){
+                
+        console.log('Tienes cambios sin guardar');
+        
+        return false;
+    }
+
+    var arr = cargarArray()||[];
+
+    function getId(){
+        let i = new Number(localStorage.getItem('id')||arr.length);
+        localStorage.setItem('id',i+1);
+        return i+1;
+    }
+
+    function cargarArray(){
+        return JSON.parse(localStorage.getItem('agenda'))
+    }
+
+    function leerContactos(){
+        accionesFormulario();
+    }
+
+    function modoInsercion(){
+        insertar.disabled = false;
+        actualizar.disabled = true;
+        borrar.disabled = true;
+        limpiar.disabled = false;
+        guardar.disabled = false;
+    }
+
+    function modoSeleccion(){
+        insertar.disabled = true;
+        actualizar.disabled = false;
+        borrar.disabled = false;
+        limpiar.disabled = false;
+        guardar.disabled = false;
+    }
+
+    function validarCampoTexto(obj){
+        return obj.value.trim() !== '';
+    }
+
+    function rellenarTabla(){
+        let params = {
+            objetos         : arr
+            ,columnas       : [
+                {type : 'hidden', nombre : '#', index : 'id'}
+                ,{nombre : 'Nombre', index : 'nombre'}
+                ,{nombre : 'Dirección', index : 'direccion'}
+                ,{nombre : 'Teléfono', index : 'telefono'}
+                ,{nombre : 'Correo E', index : 'email'}
+            ]
+            ,idContenedor   : 'containerTabla'
+            ,evento         : {click : function(obj){rellenarFormularioContacto(obj);modoSeleccion();}}
+            ,estilos        : {
+                tabla           : 'table .table-striped'
+                ,cabecera       : ''
+                ,filasPares     : 'background-color:rgba(0,0,0,.05)'
+            }
+        }
+        crearTabla(params);
+    }
+
+    function rellenarFormularioContacto(contacto){
+        rellenarFormulario(contacto);
+    }
+
+    function insertarContacto() {
+        console.log('insertarContacto');
+        if(!validarDatos()){
+            console.log('Formulario no válido');
+            return false;
+        }
+        arr.push(getContactoDesdeFormulario());
+        accionesFormulario();
+    }
+
+    function actualizarContacto() {
+        console.log('actualizar');
+        let contacto = getContactoDesdeFormulario();
+        console.log(contacto);
+        if(!contacto){
+            console.log('Contacto es nulo o undefined')
+            return false;
+        }
+
+        for(let x=0;x<arr.length;x++){
+            let aux = arr[x];
+            if(parseInt(aux.id) === parseInt(contacto.id)){
+                console.log(aux);
+                arr[x] = contacto;
+                accionesFormulario();
+                break;
+            }
+        }
+    }
+
+    function borrarContacto() {
+        console.log('borrar');
+        let contacto = getContactoDesdeFormulario();
+        if(contacto){
+            /* let arr1 = arr; arr  = [];
+            for(cont of arr1){
+                if(cont.id !== parseInt(contacto.id)){
+                    arr.push(cont);
+                }
+            }
+            arr1 = []; */
+
+            for(let x=0;x<arr.length;x++){
+                let aux = arr[x];
+                if(aux.id === parseInt(contacto.id)){
+                    arr.splice(x,1);
+                    break;
+                }
+            }
+            accionesFormulario();
+        }
+    }
+
+    function getContactoDesdeFormulario(){
+        if(validarDatos()){
+            console.log('getContactoDesdeFormulario');
+            return crearObjeto();
+        }
+        return null;
+    }
+
+    function limpiarFormulario() {
+        console.log('limpiarFormulario');
+        vaciarFormulario();
+        modoInsercion();
+    }
+
+    function guardarContactos() {
+        localStorage.setItem('agenda',JSON.stringify(arr));
+    }
+
+    function validarDatos(){
+        return validarFormulario();
+    }
+
+    function accionesFormulario(){
+        limpiarFormulario();
+        rellenarTabla();
+    }
+
+</script>
+
+<body>
+    <div class="container">
+        <h2>Agenda</h2>
+        <form id='formulario'>
+            <div>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-primary" id="insertar">Insertar</button>
+                    <button type="button" class="btn btn-primary" id="actualizar">Actualizar</button>
+                    <button type="button" class="btn btn-primary" id="borrar">Borrar</button>
+                    <button type="button" class="btn btn-primary" id="limpiar">Limpiar</button>
+                    <button type="button" class="btn btn-primary" id="guardar">Guardar</button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="id">Id</label>
+                <input type="text" class="form-control-plaintext" name="id" id="id" aria-describedby="emailHelp"
+                    placeholder="Se genera dinámico">
+            </div>
+        <div class="row">
+            <div class="col">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" name="nombre" id="nombre" aria-describedby="emailHelp"
+                    placeholder="Introduce el nombre">
+            </div>
+
+            <div class="col">
+                <label for="direccion">Dirección</label>
+                <input type="text" class="form-control" name="direccion" id="direccion" aria-describedby="emailHelp"
+                    placeholder="Introduce la dirección">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="telefono">Teléfono</label>
+                <input type="text" class="form-control" name="telefono" id="telefono" aria-describedby="emailHelp"
+                    placeholder="Introduce el teléfono">
+            </div>
+        
+            <div class="col">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp"
+                    placeholder="Introduce el email">
+            </div>
+        </div>
+        <div class="table-responsive" id="containerTabla">
+        </div>
+        </form>
+    </div>
+</body>
+
+</html>

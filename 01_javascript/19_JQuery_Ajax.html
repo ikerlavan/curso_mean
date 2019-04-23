@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- <script src="http://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E=" crossorigin="anonymous"></script>     -->
+    <script src="js/jquery.js"></script>
+</head>
+
+<script type="application/javascript">
+
+$(inicializar);
+
+function inicializar(){
+    $('#btnListar').click(listarPublicaciones)
+}
+
+/* function listarPublicaciones(){
+    $.ajax({
+        url         : 'https://jsonplaceholder.typicode.com/posts'
+        ,type       : 'GET'
+        ,async      : true
+        ,success    : rellenarPublicaciones
+        ,error      : procesarError
+        ,complete   : fin
+    })
+} */
+
+//https://jsonplaceholder.typicode.com/users/1
+
+function listarPublicaciones(){
+    $.ajax({
+        url         : 'https://jsonplaceholder.typicode.com/posts'
+        ,type       : 'GET'
+        ,async      : true
+    })
+    .done(rellenarPublicaciones)
+    .fail(procesarError)
+    .always(fin)
+}
+
+function getUser(id, publicacion){
+    $.ajax({
+        url         : 'https://jsonplaceholder.typicode.com/users/'+id
+        ,type       : 'GET'
+        ,async      : true
+    })
+    .done(publicarHtml)
+    .fail(procesarError)
+    .always(fin)
+}
+
+function rellenarPublicaciones(publicaciones){
+    $('#publicaciones').html('')
+    let html = ''
+    $(publicaciones).each(function(){
+        html = html + '<h2>' + this.title + '</h2>'
+        html = html + '<p>' + this.body + '</p>'
+        /* let user = getUser(this.userId)
+        html = html + '<quote>' + user.name + '</quote>' */
+    }).appendTo('#publicaciones')
+
+
+}
+
+function procesarError(error){
+    console.log("JSON error",error)
+}
+
+function fin(){
+    console.log("Se acabó")
+}
+
+function pintarPublicaciones(){
+
+}
+
+</script>
+
+<body>
+
+    <h1>Peticiones AJAX con jQuery</h1>
+    <button id="btnListar">Listar publicaciones</button>
+    <div id="publicaciones"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <script src="js/11_Biblioteca.js" type="application/javascript"></script>
+</head>
+
+<script type="application/javascript">
+
+/*
+function XMLHttpRequest(){
+    //Propiedades pensadas para guardar valores
+    this.status
+    this.statusText
+    this.responseText
+    this.responseXML
+    this.readyState 
+
+    //Propiedades pensadas para guardar funciones (proporcionadas por nosotros)
+    this.onreadystatechange = null
+    this.onload = null
+    this.onerror = null
+}
+XMLHttpRequest.prototype.open = function(metodo, url, asincrono) {...}
+XMLHttpRequest.prototype.send = function(body) {...}
+*/
+
+function peticionAJAX_Sincrona(){
+
+    let xmlHttp = new XMLHttpRequest()
+
+    //xmlHttp.open(metodo, url, asincrono/sincrono (true/false))
+    xmlHttp.open('GET', 
+                 'http://localhost:8080/Ej01_REST/servicios/peliculas',
+                 false)
+    xmlHttp.send(null)
+
+    console.log("=======================================")
+    console.log(xmlHttp.status) //Código http de la respuesta. Ej: 200
+    console.log(xmlHttp.statusText) //Cadena asociada al estatus. Ej: 'Ok'
+    console.log(xmlHttp.responseText) //Contenido del body de la respuesta en bruto
+    console.log(xmlHttp.responseXML) //contenido del body trasformado en un árbol de nodos si la respuesta era un XML
+
+    if(xmlHttp.status == "200"){
+        rellenarTablaPeliculas(JSON.parse(xmlHttp.responseText))
+    } else {
+        console.log("ERROR!!!!!")
+    }
+
+}
+
+function peticionAJAX_Asincrona(){
+
+    mensaje.innerHTML = '<h2><font color="lightGreen">Por favor espere</font></h2>'
+
+    let xmlHttp = new XMLHttpRequest()
+
+    xmlHttp.open('GET', 
+                 'http://localhost:8080/Ej01_REST/servicios/peliculas',
+                 true)
+
+    //El objeto xmlHttpRequest invoca su función 'onreadystatechange' cada vez
+    //que cambia su 'readyStatus'
+    xmlHttp.onreadystatechange = function(){
+        //Valores de la propiedad readyState
+        //0: creado
+        //1: open
+        //2: enviado
+        //3: comienza a recibirse la respuesta
+        //4: respuesta completa. ¡Este es el estado que nos interesa!
+        console.log(this.readyState)
+
+        if(this.readyState == 4){
+            //Preguntamos qué tal ha ido la cosa
+            if(this.status == 200){
+                mensaje.innerHTML = ''
+                rellenarTablaPeliculas(JSON.parse(this.responseText))
+            } else {
+                console.log("ZASCA!")
+            }
+        }
+    }
+
+    xmlHttp.send()
+    console.log(xmlHttp.responseText) //Undefined si o si
+}
+
+function peticionAJAX(){
+
+    let xmlHttp = new XMLHttpRequest()
+    xmlHttp.open('GET', 
+                 'http://localhost:8080/Ej01_REST/servicios/peliculas',
+                 true)
+
+    xmlHttp.onload = function(){
+        //Ya sabemos que es 200 Ok
+        rellenarTablaPeliculas(JSON.parse(xmlHttp.responseText))
+    }
+
+    xmlHttp.onerror = function(){
+        console.log("ERROR!")
+    }
+
+    xmlHttp.send()
+
+}
+
+function peticionInsertarPelicula(){
+    let xmlHttp = new XMLHttpRequest()
+    
+    xmlHttp.open('POST', 
+                 'http://localhost:8080/Ej01_REST/servicios/peliculas/',
+                 true)
+    xmlHttp.setRequestHeader('Content-type', 'application/json;charset=UTF-8')
+    xmlHttp.onload = function(){
+        //Ya sabemos que es 200 Ok
+        console.log(this.responseText);
+        rellenarTablaPeliculas(JSON.parse(this.responseText))
+    }
+
+    xmlHttp.onerror = function(){
+        console.log("ERROR!")
+    }
+
+    xmlHttp.onabort = function(){
+        console.log("ERROR!")
+    }
+
+    xmlHttp.send(JSON.stringify(crearObjeto('formulario')))
+}
+
+
+
+
+/* function peticionAjaxGenerica(parametros){
+    let url     = parametros.url;
+    let metodo  = parametros.method?parametros.method:'GET';
+
+    if(parametros.asincrono == null || typeof parametros.asincrono == 'undefined'){
+        parametros.asincrono = true;
+    }
+    let asincrono = parametros.asincrono?parametros.asincrono:true;
+    
+    let contentType = parametros.contentType?parametros.contentType:null
+    let body = parametros.body?parametros.body:''
+    let success = parametros.success?parametros.success:''
+    let error = parametros.error?parametros.error:''
+
+    let ajax = new XMLHttpRequest();
+    ajax.open(metodo
+              ,url
+              ,asincrono);
+
+    ajax.onload     = success;
+    ajax.onerror    = error;
+    if(contentType){
+        ajax.setRequestHeader('Content-type', contentType);
+    }
+    
+    ajax.send(body);
+} */
+
+
+
+function rellenarTablaPeliculas(peliculas){
+    crearTabla({
+        objetos      : peliculas,
+        idContenedor : "peliculas"
+    })
+}
+
+function peticionAJAX_Sincrona_Gen(){
+    let objetoPeticionAJAXGenerica = {
+        metodo      : 'GET'
+        ,url        : 'http://localhost:8080/Ej01_REST/servicios/peliculas/'
+        ,asincrono  : false
+        ,success    : function(){
+            console.log(this.responseText);
+            rellenarTablaPeliculas(JSON.parse(this.responseText));
+        }
+        ,error      : function(){console.log('error')}
+        ,contentType: 'application/json;charset=UTF-8'
+    }
+    peticionAjaxGenerica(objetoPeticionAJAXGenerica);
+}
+
+function peticionAJAX_Asincrona_Gen(){
+    let objetoPeticionAJAXGenerica = {
+        metodo      : 'GET'
+        ,url        : 'http://localhost:8080/Ej01_REST/servicios/peliculas/'
+        ,asincrono  : true
+        ,success    : function(){
+            console.log(this.responseText);
+            rellenarTablaPeliculas(JSON.parse(this.responseText));
+        }
+        ,error      : function(){console.log('error')}
+        ,contentType: 'application/json;charset=UTF-8'
+    }
+    peticionAjaxGenerica(objetoPeticionAJAXGenerica);
+}
+
+function peticionInsertarPelicula_Gen(){
+    let body = JSON.stringify(crearObjeto('formulario'));
+    let objetoPeticionAJAXGenerica = {
+        metodo      : 'POST'
+        ,url        : 'http://localhost:8080/Ej01_REST/servicios/peliculas/'
+        ,asincrono  : true
+        ,success    : function(){
+            console.log(this);
+            console.log('Todo OK');
+            rellenarTablaPeliculas(JSON.parse(this.responseText));
+        }
+        ,error      : function(){console.log('error')}
+        ,contentType: 'application/json;charset=UTF-8'
+        ,body       : body
+    }
+    peticionAjaxGenerica(objetoPeticionAJAXGenerica);
+}
+
+window.onload = function(){
+    btnListarPeliculasSincrono.onclick      = peticionAJAX_Sincrona
+    btnListarPeliculasAsincrono.onclick     = peticionAJAX_Asincrona
+    btnListarPeliculas.onclick              = peticionAJAX
+    btnInsertarPelicula.onclick             = peticionInsertarPelicula
+
+    btnListarPeliculasSincronoGen.onclick   = peticionAJAX_Sincrona_Gen
+    btnListarPeliculasAsincronoGen.onclick  = peticionAJAX_Asincrona_Gen
+    btnInsertarPeliculaGen.onclick          = peticionInsertarPelicula_Gen
+}
+
+</script>
+
+<body>
+    
+    <h1>13 AJAX</h1>
+
+    <hr/>
+    <div class="float-left">
+        <button id="btnListarPeliculasSincrono" class="btn btn-secondary">Listar películas Sincrono</button>
+        <button id="btnListarPeliculasAsincrono" class="btn btn-secondary">Listar películas Asincrono</button>
+        <button id="btnListarPeliculas" class="btn btn-secondary">Listar películas</button>
+        <button id="btnInsertarPelicula" class="btn btn-secondary">Insertar películas</button>
+
+    </div><br/>
+    <div class="float-left">
+        <button id="btnListarPeliculasSincronoGen" class="btn btn-dark">Listar películas Sincrono Genérico</button>
+        <button id="btnListarPeliculasAsincronoGen" class="btn btn-dark">Listar películas Asincrono Genérico</button>
+        <button id="btnInsertarPeliculaGen" class="btn btn-dark">Insertar películas Genérico</button>
+</div>
+<br/>
+
+    
+
+    <p></p>
+    
+    <div id="mensaje"></div>
+
+    <div id="peliculas"></div>
+<div class="container">
+    <form id="formulario">
+        <table class="">
+            <tr>
+                <td>Título</td>
+                <td>
+                    <input type="text" name="titulo" id="titulo"/>
+                </td>           
+            </tr>
+            <tr>
+                <td>Director</td>
+                <td>
+                    <input type="text" name="director" id="director"/>
+                </td>         
+            </tr>
+            <tr>
+                <td>Género</td>
+                <td>
+                    <input type="text" name="genero" id="genero"/>
+                </td> 
+            </tr>
+            <tr>
+                <td>Año</td>
+                <td>
+                    <input type="text" name="year" id="year"/>
+                </td>                           
+            </tr>
+        </table>        
+    </form>    
+
+</div>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+    <title>Document</title>
+</head>
+
+<script type="application/javascript">
+
+    function onDocumentWrite() {
+        document.write("<h1>Acabas de borrar el árbol DOM</h1>");
+    }
+
+    function onInnerHTML() {
+        div1.innerHTML = div1.innerHTML + "<h1>Estamos insertando HTML en el div</h1>";
+    }
+
+    function onClearInnerHTML() {
+        div1.innerHTML = "";
+    }
+
+    function crearNodos() {
+        div2.innerHTML = "";
+        let elem = document.createElement("p");
+        let elemNegrita = document.createElement("b");
+
+        let nodoTexto = document.createTextNode(" creando un nodo con texto")
+        
+        elem.setAttribute("id", "creando")
+
+        elemNegrita.appendChild(document.createTextNode("Estoy"));
+        
+        elem.appendChild(elemNegrita);
+        elem.appendChild(nodoTexto);
+
+        div2.appendChild(elem);
+        div2.appendChild(getNodoTablaHtml());
+    }
+
+    function getNodoTablaHtml(){
+        let peliculas = getListado();
+        console.log(peliculas.length);
+        let tabla       = document.createElement("table");
+        tabla.setAttribute("class","table table-bordered table-striped");
+        let cabecera    = document.createElement("tr");
+
+        for(n in peliculas[0]){
+            let fCabe = document.createElement("th");
+
+
+            fCabe.appendChild(document.createTextNode(getCapital(n)));
+            cabecera.appendChild(fCabe);
+        }
+            tabla.appendChild(cabecera); 
+        for(let a=0 ; a<peliculas.length ; a++){
+            
+                let fila = document.createElement("tr");
+                if(a%2===0){
+                    fila.setAttribute("style","background-color:rgba(0,0,0,.05);");
+                }
+                
+                for(nodo in peliculas[a]){
+                    let ff = document.createElement("td");
+                    ff.appendChild(document.createTextNode(peliculas[a][nodo]));
+                    fila.appendChild(ff);
+                }
+
+                tabla.appendChild(fila);
+        }
+        return tabla;
+    }
+
+    function getCapital(cadena){
+        let capital = cadena.charAt(0).toUpperCase();
+        capital = capital + cadena.substring(1,cadena.length);
+        return capital;
+    }
+
+    function getListado(){
+        let peliculas = [{
+                titulo      : "Testigo de Cargo"
+                ,director   : "Billy Wilder"
+                ,genero     : "‎Drama"
+            },{
+                titulo      : "El halcón y la flecha"
+                ,director   : "Jacques Tourneur"
+                ,genero     : "Aventura"
+            },{
+                titulo      : "La vida de Brian"
+                ,director   : "Monty Python"
+                ,genero     : "Comedia"
+            },{
+                titulo      : "El día de la bestia"
+                ,director   : "Alex de la Iglesia"
+                ,genero     : "Comedia"
+            },{
+                titulo      : "El pico"
+                ,director   : "Eloy de la Iglesia"
+                ,genero     : "Drama"
+            }   
+        ];
+        return peliculas;
+    }
+
+    function crearNodos2() {
+        let cadena      = "<table class='table table-bordered table-striped'>";
+        let cabecera    = "<thead><tr>";
+        let cuerpo      = "<tbody>";
+        let peliculas   = getListado();
+
+
+        for(let a=0 ; a<peliculas.length ; a++){
+            cuerpo = cuerpo + "<tr " + (a%2===0 ? "style='background-color:rgba(0,0,0,.05)'>":">");
+            for(nodo in peliculas[a]){
+                if (a===0){
+                    cabecera = cabecera + "<th>" + getCapital(nodo) + "</th>";
+                }
+                cuerpo = cuerpo + "<td>" + peliculas[a][nodo] + "</td>";
+            }
+            cuerpo = cuerpo + "</tr>";
+        }
+        
+        cabecera = cabecera + "</tr></thead>";
+        cuerpo = cuerpo + "</tbody>";
+        cadena = cadena + cabecera + cuerpo + "</table>";
+
+        div3.innerHTML = cadena;
+
+    }
+
+    function vaciarSelect() {
+        
+/*         let opt = document.createElement("option");
+        opt.setAttribute("value", "");
+        ciudades.appendChild(opt); */
+        // ciudades.value = "";
+
+        let numHijos = ciudades.childNodes.length;
+        for(let a=0;a<numHijos;a++){
+            ciudades.childNodes[0].remove();
+        }
+        
+        
+    }
+
+    window.onload = function () {
+        btn_documentWrite.onclick   = onDocumentWrite
+        btn_innerHTML.onclick       = onInnerHTML
+        btn_vaciarInnerHTML.onclick = onClearInnerHTML
+        btn_crearNodos.onclick      = crearNodos
+        btn_crearNodos2.onclick     = crearNodos2
+        btn_vaciarSelect.onclick    = vaciarSelect
+    }
+
+</script>
+
+<body>
+
+    <marquee>
+        <h1>
+            <font color="lightGreen">
+                DHTML
+            </font>
+        </h1>
+    </marquee>
+
+    <hr />
+
+    <div align="center">
+        <input type="button" id="btn_documentWrite" value="Document.write" />
+        <input type="button" id="btn_innerHTML" value="innerHTML" />
+        <input type="button" id="btn_vaciarInnerHTML" value="Vaciar innerHTML" />
+        <input type="button" id="btn_crearNodos" value="Crear nodos" />
+        <input type="button" id="btn_crearNodos2" value="Crear nodos 2" />
+        <input type="button" id="btn_vaciarSelect" value="Vaciar select" />
+    </div>
+
+    <hr />
+
+    <div id="div1"></div>
+
+    <hr />
+
+    <div id="div2"></div>
+
+    <hr />
+
+    <div id="div3"></div>
+
+    <hr />
+
+    <div align="center">
+        <select id="ciudades">
+            <option value="Getafe">Getafe</option>
+            <option value="Madrid">Madrid</option>
+            <option value="Salamanca">Salamanca</option>
+            <option value="Santa Pola">Santa Pola</option>
+            <option value="Chinchón">Chinchón</option>
+        </select>
+    </div>
+
+    <hr />
+
+    <div id="div5"></div>
+
+</body>
+
+</html>

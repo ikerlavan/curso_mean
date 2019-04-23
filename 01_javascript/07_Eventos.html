@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Eventos</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<script type="application/javascript">
+
+    function onClickBtnDale() {
+
+    }
+
+    function onClickBtnDale() {
+
+    }
+
+    function validarFormulario() {
+        let valido      = true;
+        let noValidado  = [];
+        let cadena      = "";
+        if (dato.value.trim() === '') {
+            valido = false;
+            noValidado.push("dato");
+        }
+
+        if (!valido) {
+            return noValidado;
+            
+        }
+return null;
+    }
+
+    function onKeyPressCajaTexto(e) {
+        if (e.keyCode !== 13 && e.keyCode !== 8 && e.keyCode !== 32) {
+            concatenar(e.key);
+        }
+
+    }
+
+    function concatenar(caracter) {
+        espan.innerHTML += caracter;
+    }
+    window.onload = function () {
+        /* btnEnviar.disabled = true; */
+
+        btnVaciar.onclick = onClickBtnDale
+
+        btnDale.onclick = onClickBtnDale
+
+        btnEnviar.onclick = function(event){
+            let noValidado = validarFormulario();
+            if(noValidado){
+                console.log(event);
+                event.prevent();
+                for (d of noValidado) {
+                    cadena += d;
+                }
+                alert(cadena + " es obligatorio");
+            }
+        }
+
+        cajaTexto.onkeyup = function () {
+
+        }
+
+        dato.onkeyup = onKeyPressCajaTexto
+
+    }
+
+</script>
+
+<body class="container">
+
+    <h1>07 Eventos</h1>
+
+    <hr />
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button" id="btnDale">Dale</button>
+        </div>
+        <!-- <div class="custom-file"> -->
+        <input type="text" class="form-control" aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default" id="cajaTexto">
+        <!-- <label class="custom-file-label" for="cajaTexto">Vaciar</label> -->
+        <!-- </div> -->
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button" id="btnVaciar">Vaciar</button>
+        </div>
+    </div>
+
+    <hr />
+
+    <form action="#">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Dato</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default" name="dato" id="dato">
+        </div>
+        <!--  <input type="text" name="dato" id="dato" /> -->
+        <input type="submit" class="btn btn-primary" id="btnEnviar" value="Enviar" />
+        <hr />
+        <div class="card" style="width: 12rem;">
+            <img src="img/cthullu.png" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Copia texto</h5>
+                <span id="espan" class="card-text"></span>
+            </div>
+        </div>
+    </form>
+
+</body>
+
+</html>

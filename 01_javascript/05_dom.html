@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+    <title>El DOM</title>
+</head>
+
+
+
+<script type="application/javascript">
+    function carga() {
+        let nombre = document.getElementById("dato").value;
+        // console.log(nombre);
+        document.getElementById("nombre").value = document.getElementById("dato").value
+
+        let nodos = document.getElementsByTagName("input");
+
+        /*for (let z in nodos) {
+            console.log(nodos[z])
+        } */
+
+        for (nodo of nodos) {
+            if (nodo.type === 'text') {
+                // console.log(nodo);
+            }
+        }
+        // console.log(document.getElementsByName("nombre"));
+        for (nodo of document.getElementsByName("nombre")) {
+            // console.log(nodo);
+        }
+
+        // console.log(document.getElementsByTagNameNS("input", ""));
+        for (nodo of document.getElementsByTagNameNS("input", "")) {
+            // console.log(nodo);
+        }
+
+    }
+
+
+
+    $(function () {
+        $('.alert').hide();
+
+        $('#validar').click(function () {
+            console.log('validando');
+            let valida = {
+                nombre: false
+                , direccion: false
+                , telefono: false
+            }
+            valida.nombre = esVacio($('#nombre'), valida);
+            valida.direccion = esVacio($('#direccion'), valida);
+            valida.telefono = esVacio($('#telefono'), valida);
+
+            $('.alert-warning').append(cargaAlert(valida));
+            $('.alert').alert().show();
+
+            function esVacio(obj, respaldo) {
+                if (obj && obj.text().trim() !== '') {
+                    respaldo.nombre = true;
+                }
+            }
+
+            function cargaAlert(arr) {
+                let cadena = "";
+                for (let n in arr) {
+                    if (!arr[n]) {
+                        cadena = cadena + '<p class="mb-0">' + n + ' debe estar relleno</p><hr/>';
+                    }
+                }
+                return cadena;
+            }
+        });
+
+        $('#prepararParametros').click(function () {
+            let cadena = ''; 
+            $('form#formulario input[type=text],form#formulario textarea, form#formulario select')
+                .forEach(function(){
+                    if($(this).text()!==''){
+                        cadena = cadena + $(this).id + '=' + $(this).text() + '&'
+                    }
+                })
+                console.log(cadena);
+        })
+
+    });
+
+</script>
+
+<body onload="carga()">
+
+    <div class="alert alert-warning" data-dismiss="alert" role="alert">
+        <h4 class="alert-heading">Ups!</h4>
+
+    </div>
+
+
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Árbol DOM</span>
+    </nav>
+    <!-- About Section -->
+    <section class="page-section" id="home">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form name="formulario" id="formulario" action="#" method="get">
+                        <div class="form-group">
+                            <label for="dato">Nombre: </label>
+                            <input type="text" name="dato" id="dato" value="mierda" class="form-control" />
+                        </div>
+
+                        <hr />
+
+                        <input type="button" name="accion" value="Validar" class="btn btn-primary" id="validar" />
+                        <input type="button" value="Preparar parametros" id="prepararParametros"
+                            class="btn btn-primary" />
+                        <input type="submit" name="accion" value="Insertar" class="btn btn-primary" />
+                        <input type="submit" name="accion" value="Modificar" class="btn btn-primary" />
+                        <input type="submit" name="accion" value="Borrar" class="btn btn-primary" />
+
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" class="form-control" name="direccion" id="direccion"
+                                placeholder="direccion">
+                        </div>
+                        <div class="form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" id="telefono"
+                                placeholder="telefono">
+                        </div>
+                        <div class="form-group">
+                            <label for="ciudad">Ciudad</label>
+                            <select class="form-control" name="ciudad" id="ciudad">
+                                <option>Getafe</option>
+                                <option>Madrid</option>
+                                <option>Salamanca</option>
+                                <option>Santa Pola</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="observaciones">Observaciones</label>
+                            <textarea class="form-control" id="observaciones" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+</body>
+
+</html>

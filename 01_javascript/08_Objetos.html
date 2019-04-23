@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Objetos y prototype</title>
+
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+        integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+</head>
+
+<script type="application/javascript">
+
+    let persona1 = [];
+    let persona2 = {};
+
+    persona1.nombre = 'Bart';
+    persona2.nombre = 'Bart';
+
+    persona1['direccion'] = 'c/ Evergreen Terrace';
+    persona2['direccion'] = 'c/ Evergreen Terrace';
+
+    persona1.push('Algo');
+
+
+    let coche = {
+        marca       : 'Peugeot'
+        ,modelo     : '306 XD'
+        ,color      : 'Gris'
+        ,toString   : function(){
+            return this.marca + " " + this.modelo + " " + this.color;
+        }
+    }
+
+    let barco1 ={nombre : 'Sanatra'}
+    let barco2 ={nombre : 'Ipsolur'}
+    let barco3 ={nombre : 'Cantafas'}
+
+    let toString = function(){
+        return "Soy el velero " + this.nombre
+    }
+
+    barco1.toString = toString;
+    barco2.toString = toString;
+    barco3.toString = toString;
+
+    
+    /* Funciones PROTOTIPO */
+    function Avion(year, modelo, fabricante){
+        this.year       = year;
+        this.modelo     = modelo;
+        this.fabricante = fabricante;
+    }
+
+    Avion.prototype.toString   = function(){
+        return this.modelo + " fabricado por " + this.fabricante + " en el año " + this.year;
+    }
+
+    function Dragon(nombre, tipo, edad) {
+        this.nombre = nombre;
+        this.tipo   = tipo;
+        this.edad   = edad;
+    }
+
+    Dragon.prototype.toString   = function(){
+        return this.nombre + " del tipo " + this.tipo + " de edad " + this.edad + " de años";
+    }
+
+    function Robot(nombre, altura, frase) {
+        this.nombre     = nombre;
+        this.altura     = altura;
+        this.frase      = frase;
+    }
+
+    Robot.prototype.saludar    = function(){
+        return "Hola, soy " + this.nombre + ". " + this.frase;
+    }
+
+    function Disco(titulo, grupo, year){
+        this.titulo  = titulo;
+        this.grupo   = grupo;
+        this.year    = year;
+    }
+
+    Disco.prototype.toString = function(){
+        return "El grupo " + this.grupo + " lanzó el disco " + this.titulo + " el año " + this.year;        
+    }
+
+    
+    window.onload   = function(){
+        let parrafo1 = active.getElementsByTagName("p")[0];
+        let parrafo2 = active.getElementsByTagName("p")[1];
+
+        let parrafo1Pestaña2 = tab2.getElementsByTagName("p")[0];
+        let parrafo2Pestaña2 = tab2.getElementsByTagName("p")[1];
+        let parrafo3Pestaña2 = tab2.getElementsByTagName("p")[2];
+
+        let parrafo1Pestaña3 = proto.getElementsByTagName("p")[0];
+        let parrafo2Pestaña3 = proto.getElementsByTagName("p")[1];
+        let parrafo3Pestaña3 = proto.getElementsByTagName("p")[2];
+
+        let barcos = '<ul class="list-group"><li class="list-group-item">' + barco1.toString() + '</li><li class="list-group-item">' + barco2.toString() + '</li><li class="list-group-item">' + barco3.toString() + '</li></ul>';
+
+        parrafo1.innerHTML = coche.toString();
+        parrafo2.innerHTML = barcos;
+        
+
+        let avion1      = new Avion(1978, 'F-18 Hornet', 'Ronald McDonals');
+        let avion2      = new Avion(1978, 'Tornado', 'Panavia');
+
+        let dragon1     = new Dragon('Smaug', 'Rojo', 'Un cerro');
+        let dragon2     = new Dragon('Quetzalcóatl', 'Emplumado', 'miles');
+
+        let robot1      = new Robot('Bender', '1.8', 'Besa mi culo metálico');
+        let robot2      = new Robot('R2D2', '1.2', 'Pi pi pi pi pi pi ');
+        let robot3      = new Robot('Ash', '1.8', 'No tenéis posibilidades ....');
+
+        let aviones     ='<ul class="list-group"><li class="list-group-item">' + avion1.toString() + '</li><li class="list-group-item">' + avion2.toString() + '</li></ul>';
+        let dragones    ='<ul class="list-group"><li class="list-group-item">' + dragon1.toString() + '</li><li class="list-group-item">' + dragon2.toString() + '</li></ul>';
+        let robots      ='<ul class="list-group"><li class="list-group-item">' + robot1.saludar() + '</li><li class="list-group-item">' + robot2.saludar()+ '</li><li class="list-group-item">' + robot3.saludar() + '</li></ul>';
+
+        parrafo1Pestaña2.innerHTML = aviones;
+        parrafo2Pestaña2.innerHTML = dragones;
+        parrafo3Pestaña2.innerHTML = robots;
+
+        let disco1      = new Disco('Live after death', 'Iron Maiden', 1985);
+        console.log(disco1);
+        let disco2      = new Disco('SA', 'SA', 1999);
+        let disco3      = new Disco('En directo', 'Leño', 1975);
+
+        let sumar       = new Function('s1','s2','return s1+s2');
+        let arr         = new Array(2,4,6);
+
+
+        let discos      = '<ul class="list-group"><li class="list-group-item">' + disco1.toString() + '</li><li class="list-group-item">' + disco2.toString()+ '</li><li class="list-group-item">' + disco3.toString() + '</li></ul>';
+        let funciones   = "new Function('s1','s2','return s1+s2') = sumar(1,2) -> " + sumar(1,2);
+        let arraies     = arr
+
+        parrafo1Pestaña3.innerHTML = discos;
+        parrafo2Pestaña3.innerHTML = funciones;
+        parrafo3Pestaña3.innerHTML = arraies;
+    }
+
+</script>
+
+<body>
+    <div class="container">
+        <h1>08 Objetos</h1>
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#active" data-toggle="tab">Funciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tab2" data-toggle="tab">Clases</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#proto" data-toggle="tab">Prototype</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" data-toggle="tab" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content card-body">
+                <div id="active" class="tab-pane active">
+                    <h5 class="card-title">Datos de vehículo</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <hr />
+                    <hr />
+                    <h5 class="card-title">Datos de barcos</h5>
+                    <p class="card-text"></p>
+                    <h5 class="card-title">Declaración de variables</h5>
+                    <p class="card-text"></p>
+                    <a href="#tab2" class="btn btn-primary">Go somewhere</a>
+                </div>
+                <div id="tab2" class="tab-pane">
+                    <h5 class="card-title">Datos aviones</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <h5 class="card-title">Datos dragones</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <h5 class="card-title">Datos robots</h5>
+                    <p class="card-text"></p>
+                </div>
+                <div id="proto" class="tab-pane">
+                    <h5 class="card-title">Añadiendo funciones a clase por prototipo</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <h5 class="card-title">Creando funciones con new</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <h5 class="card-title">Array con prototipo </h5>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</body>
+
+</html>

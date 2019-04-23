@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Arrays</title>
+
+    <script type="application/javascript">
+
+        let aDatos = [1, 2, 3, 4, 5];
+
+        console.log(aDatos);
+
+
+        let aLetras = [];
+        aLetras.push("A")
+        aLetras.push("B")
+        aLetras.push("C")
+        aLetras.push("D")
+        aLetras.push("E")
+        aLetras.push("F")
+        aLetras.push("G")
+        aLetras.push("H")
+
+        console.log(aLetras);
+
+        let mapa = [{ 1: "Manuel" }, { 2: "Iker" }, { 3: "Matilde" }];
+        let mapa2 = [{ "Iker": {} }, [{ "color": "blanco" }], "Manuel", [{ "color": "verde" }]];
+        let persona = [];
+        persona["nombre"] = "H. P. Lovecraft";
+        persona["direccion"] = {ciudad:"Miscatonic",pais:"USA"};
+        persona["estudios"] = ["uno","dos"]
+
+
+        console.log(persona.nombre)
+
+        let impresora = {
+            tipo: "una chula"
+            , color: "gris"
+            , toString: function () {
+                return this.tipo + " " + this.color;
+            }
+        }
+        console.log(impresora);
+
+
+        console.log("for (let a = 0; a < aLetras.length; a++) {");
+        for (let a = 0; a < aLetras.length; a++) {
+            console.log(aLetras[a]);
+        }
+        console.log("for (let letra of aLetras) {");
+        for (let letra of aLetras) {
+            console.log(letra);
+        }
+
+        function _forEach(f) {
+            for (let a = 0; a < aLetras.length; a++) {
+                f(aLetras[a], a, aLetras);
+            }
+        }
+
+        let f = function (elem, index, object) {
+            console.log("En la posición " + (index+1) + " tiene " + elem);
+        }
+
+        _forEach(f);
+
+        //aLetras.forEach(f);
+        console.log('###########################################################');
+
+        console.log('###########################################################');
+        console.log("for(let l in aLetras){");
+        for (let l in persona) {
+            if(typeof  persona[l] === 'object'){
+                console.log(l);
+                for (let l1 in persona[l]) {
+                    console.log("\t" + l1 + " -> " + persona[l][l1]);
+                }
+                
+            }else{
+                console.log(l + " -> " + persona[l]);
+            }
+            
+        }
+        console.log('###########################################################');
+        console.log('###########################################################');
+        let array8 = [];
+        for(x=0;x<10;x++){
+            array8[x] = {dato: x*10}
+        }
+        console.log(array8);
+
+        function _find1(array8, valor){
+            for(item of array8){
+                if(item.dato === 70){
+                    return item;
+                }
+            }
+        }
+        
+        console.log(_find1(array8, 70));
+        console.log('###########################################################');
+        console.log('#########################HOLA##############################');
+        console.log('###########################################################');
+
+        let aPersonas = [{
+            nombre      : "H. P. Lovecraft"
+            ,direccion  : {
+                    ciudad  :"Miscatonic"
+                    ,pais   :"USA"
+            }
+        },{
+            nombre      : "J. K. Rowling"
+            ,direccion  : {
+                    ciudad  :"London"
+                    ,pais   :"England"
+            }
+        }];
+        console.log(aPersonas);
+
+        let busqueda    = function(element, index, array){
+            return element.direccion.ciudad.toUpperCase() === 'MISCATONIC';
+        }
+
+        Array.prototype._find = function(funcion){
+            for(x=0;x<this.length;x++){
+                let item = this[x];
+                if(funcion(item, x, this)){
+                    return item;
+                }
+                
+            }
+        }
+        console.log('Función por parámetro');
+        console.log(aPersonas._find(busqueda));
+        console.log('###########################################################');
+        console.log('###########################################################');
+
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
