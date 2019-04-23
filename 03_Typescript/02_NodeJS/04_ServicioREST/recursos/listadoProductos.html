@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</head>
+<script type="application/javascript">
+    let urlProductos = '/productos'
+    let urlAlmacenes = '/almacenes'
+
+    $(inicializar)
+
+    function inicializar() {
+        $('#btnActualizar').click(actualizar)
+        $('#btnNuevo').click(verFormularioProductos)
+        cargarListado()
+
+        $('.navbar-nav>li').on('click', function(){
+            $('.navbar-nav>li.active').removeClass('active')
+            $(this).addClass('active')
+        })
+
+    }
+
+    function cargarListado(){
+        $.ajax({
+            url: '/productos'
+        })
+        .done(rellenarProductos)
+        .fail(procesarError)
+    }
+
+    function actualizar(){
+        cargarListado()
+    }
+
+    function verFormularioProductos(id){
+        let cadena = ''
+        if(id){
+            cadena = `?idProducto=${id}`
+        }
+        window.location = 'formularioProductos.html'+cadena
+    }
+
+    function rellenarProductos(productos) {
+        console.log('rellenarProductos')
+        $('#tablaProductos').html('')
+        $(productos).each(function () {
+            let modelo      = this.nombre&&this.nombre!=null?this.nombre:this.modelo
+            let existencias = this.almacen_data.length>0?this.almacen_data[0].existencias:0
+            let that = this
+            $('<tr><td>'
+                + this._id+'</td><td>'
+                + this.fabricante+'</td><td>'
+                + modelo+'</td><td>'
+                + this.precio+'</td><td>'
+                + existencias+'</td><td>'
+                //+ this.almacen_data.pasillo +'-'+ +'</td>
+                + '</tr>')
+            .click(() => { seleccionarProducto(that._id) } )
+            .appendTo('#tablaProductos')
+
+
+
+/*             $(`<tr onclick="seleccionarProducto('${this._id}')"><td>
+                ${this._id}</td><td>
+                ${this.fabricante}</td><td>
+                ${this.modelo}</td><td>
+                ${this.precio}</td><td>
+                ${existencias}</td><td>
+                </tr>`)
+            .appendTo('#tablaProductos') */
+        })
+    }
+
+    function seleccionarProducto(id) {
+        console.log(id)
+        verFormularioProductos(id)
+    }
+
+    function getAlmacen(id, pro){
+        $.ajax({
+            url: urlAlmacenes
+        })
+        .done(function(alm){
+            return pintarFila(alm, pro)
+        })
+        .fail(procesarError)
+    }
+
+    function procesarError(error) {
+        console.log(error)
+    }
+
+</script>
+
+<body class="container-fluid">
+
+
+    <div class="text-center page-header">
+        <h1>Aplicación de gestion de productos GestiProd</h1>
+    </div>
+
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Productos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Almacén</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Proveedores</a>
+            </li>
+        </ul>
+    </nav>
+
+    <br />
+    <h3 class="text-center">
+        Listado de productos
+    </h3>
+    <br />
+
+    <div class="row">
+        <div class="col-xs-0 col-sm-2"></div>
+        <div class="col-xs-12 col-sm-8">
+
+            <div class="text-center">
+                <input type="button" id="btnNuevo" class="btn btn-primary" value="Nuevo" />
+                <input type="button" id="btnActualizar" class="btn btn-primary" value="Actualizar" />
+            </div>
+
+            <br />
+
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Fabricante</th>
+                        <th>Modelo</th>
+                        <th>Precio</th>
+                        <th>Existencias</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaProductos"></tbody>
+            </table>
+
+        </div>
+        <div class="col-xs-0 col-sm-2"></div>
+    </div>
+
+
+
+
+
+</body>
+
+</html>
