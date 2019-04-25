@@ -110,6 +110,8 @@
         let parrafo2Pestaña3 = proto.getElementsByTagName("p")[1];
         let parrafo3Pestaña3 = proto.getElementsByTagName("p")[2];
 
+        let parrafo1Pestaña4 = cliente.getElementsByTagName("p")[0];
+
         let barcos = '<ul class="list-group"><li class="list-group-item">' + barco1.toString() + '</li><li class="list-group-item">' + barco2.toString() + '</li><li class="list-group-item">' + barco3.toString() + '</li></ul>';
 
         parrafo1.innerHTML = coche.toString();
@@ -150,6 +152,44 @@
         parrafo1Pestaña3.innerHTML = discos;
         parrafo2Pestaña3.innerHTML = funciones;
         parrafo3Pestaña3.innerHTML = arraies;
+
+
+        let Cliente = function(){
+            this.nombre       = null;
+            this.direccion     = null;
+            this.telefono = null;
+            
+        }
+
+        Cliente.prototype.save = function(){
+            console.log("Soy el cliente "+this.nombre+" y me inserto en la bbdd")
+        }
+
+        Cliente.prototype.remove = function(){
+            console.log("Soy el cliente "+this.nombre+" y me borro de la bbdd")
+        }
+
+        Cliente.prototype.toString = function(){
+            return "El cliente " + this.nombre + " vive en " + this.direccion + ", llámale al " + this.telefono;        
+        }
+
+        Cliente.findById = function(id){
+            /* return {
+                nombre      : ''
+                ,direccion  : ''
+                ,telefono   : ''
+            } */
+
+            let cliente = new Cliente()
+            cliente.nombre = "Facundo"
+            cliente.direccion = "C/ capitán trueno"
+            return cliente
+            //console.log("Soy el cliente con id: "+id+" y me busco de la bbdd")
+        }
+        let cli = Cliente.findById(123)
+        console.log(cli)
+        let cliStatic      = '<ul class="list-group"><li class="list-group-item">' + cli.toString() + '</li></ul>';
+        parrafo1Pestaña4.innerHTML = cliStatic;
     }
 
 </script>
@@ -168,6 +208,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#proto" data-toggle="tab">Prototype</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#cliente" data-toggle="tab">Cliente</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" data-toggle="tab" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -199,6 +242,16 @@
                 </div>
                 <div id="proto" class="tab-pane">
                     <h5 class="card-title">Añadiendo funciones a clase por prototipo</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <h5 class="card-title">Creando funciones con new</h5>
+                    <p class="card-text"></p>
+                    <hr />
+                    <h5 class="card-title">Array con prototipo </h5>
+                    <p class="card-text"></p>
+                </div>
+                <div id="cliente" class="tab-pane">
+                    <h5 class="card-title">findById estático</h5>
                     <p class="card-text"></p>
                     <hr />
                     <h5 class="card-title">Creando funciones con new</h5>
